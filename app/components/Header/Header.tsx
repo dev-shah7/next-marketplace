@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useRef } from 'react';
 
 import styled from 'styled-components';
 import { FaRocket, FaWallet } from 'react-icons/fa';
@@ -9,6 +9,7 @@ import { Abril_Fatface } from 'next/font/google';
 
 import logo from '../../../public/logo.png';
 import Button from '../Button/Button';
+import useHover3d from '../../utils/hover';
 
 import heroImage from '../../../public/images/monkey.png';
 
@@ -18,8 +19,24 @@ const abril = Abril_Fatface({
 });
 
 const Header = () => {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const { transform, transition } = useHover3d(headerRef, {
+    x: 30,
+    y: -40,
+    z: 30,
+  });
+
+  const { transform: imageTransform, transition: imageTransition } = useHover3d(
+    headerRef,
+    {
+      x: 20,
+      y: -5,
+      z: 11,
+    }
+  );
+
   return (
-    <HeaderStyled>
+    <HeaderStyled ref={headerRef}>
       <nav>
         <div className='logo'>
           <Image src={logo} alt='logo' width={36} />
@@ -68,8 +85,23 @@ const Header = () => {
           </ButtonWrapper>
         </TextContent>
         <ImageContent>
-          <div className='image'>
-            <Image src={heroImage} alt='hero' width={600} height={600} />
+          <div
+            className='image'
+            style={{
+              transform,
+              transition,
+            }}
+          >
+            <Image
+              src={heroImage}
+              alt='hero'
+              width={600}
+              height={600}
+              style={{
+                transform: imageTransform,
+                transition: imageTransition,
+              }}
+            />
           </div>
         </ImageContent>
       </HeaderContent>
